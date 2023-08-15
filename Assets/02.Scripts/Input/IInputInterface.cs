@@ -6,4 +6,5 @@ public interface IInputInterface
 {
     void OnClickMouseButtonDown();
     void OnClickMouseButtonUp();
+    void OnScrollMouseButton(Direction InDir);
 }

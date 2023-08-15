@@ -25,4 +25,9 @@ public class BlockBase : MonoBehaviour, IInputInterface
     {
         Debug.Log("OnClickButtonUp"+ gameObject.name);
     }
+
+    public void OnScrollMouseButton(Direction InDir)
+    {
+        Debug.Log("On Scroll" + InDir);
+    }
 }

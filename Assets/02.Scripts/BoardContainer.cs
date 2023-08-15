@@ -55,10 +55,22 @@ public class BoardContainer : MonoBehaviour
             }
         }
     }
+
+    public void SwapBlock(int InPivotX, int InPivotY, Direction InDir)
+    {
+    }
 }
 
 [Serializable]
 public class BlockRow
 {
     public List<GameObject> Block = new List<GameObject>();
+}
+
+public enum Direction
+{
+    right,
+    left,
+    up, 
+    down
 }

@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+   private bool _isDragging = false;
+   private Vector2 _initMousePos;
+
+   private float _offsetMouseValue = 130.0f;
+
+   private IInputInterface _currentHandler;
+   
    private void Start()
    {
       StartCoroutine(CoUpdate());
@@ -14,21 +21,57 @@ public class PlayerController : MonoBehaviour
    {
       while (true)
       {
-         if (Input.GetMouseButtonDown(0))
+         if (_isDragging)
          {
-            IInputInterface handler = RaycastTarget();
-            if(handler != null)
-               handler.OnClickMouseButtonDown();
+            // Drag Mouse Action
+            Vector2 DifferMousePos = Input.mousePosition;
+            DifferMousePos -= _initMousePos;
+
+            if (DifferMousePos.magnitude > _offsetMouseValue && _currentHandler != null)
+            {
+               _isDragging = false;
+
+               if (DifferMousePos.x > _offsetMouseValue)
+               {
+                  _currentHandler.OnScrollMouseButton(Direction.right);
+               }
+               else if (DifferMousePos.x < -_offsetMouseValue)
+               {
+                  _currentHandler.OnScrollMouseButton(Direction.left);
+
+               }
+               else if (DifferMousePos.y > _offsetMouseValue)
+               {
+                  
+                  _currentHandler.OnScrollMouseButton(Direction.up);
+               }
+               else if (DifferMousePos.y < -_offsetMouseValue)
+               {
+                  
+                  _currentHandler.OnScrollMouseButton(Direction.down);
+               }
+               
+               _currentHandler = null;
+            }
          }
 
-         if (Input.GetMouseButtonUp(0))
+         if (Input.GetMouseButtonDown(0))
          {
-            IInputInterface handler = RaycastTarget();
-            if(handler != null)
-               handler.OnClickMouseButtonUp();
+            _currentHandler = RaycastTarget();
+            if (_currentHandler != null)
+            {
+               _currentHandler.OnClickMouseButtonDown();
+               _isDragging = true;
+               _initMousePos = Input.mousePosition;
+            }
          }
          
-         yield return null;
+         if (Input.GetMouseButtonUp(0))
+         {
+            _isDragging = false;
+         }
+         
+         yield return new WaitForSeconds(0.001f);
       }
    }
 

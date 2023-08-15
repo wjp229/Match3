@@ -10,7 +10,11 @@ public class GameManager : MonoBehaviour
     private GameState _gameState = GameState.Ready;
 
     private BoardContainer _boardContainer;
-    
+    public BoardContainer BoardContainer
+    {
+        get { return _boardContainer; }
+    }
+
     private void Awake()
     {
         if (Instance == null)
